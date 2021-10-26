@@ -1,0 +1,23 @@
+testing:
+- performance of an established metric on a validation dataset
+- plots such as precision-recall curves
+- operational statistics such as inference speed
+- examples where the model was most confidently incorrect
+
+conventions:
+- save all of the hyper-parameters used to train the model
+- only promote models which offer an improvement over the existing model (or baseline) when evaluated on the same dataset
+- we should be running model evaluation and model tests in parallel (In practice, most people are doing a combination of the two where evaluation metrics are calculated automatically and some level of model "testing" is done manually through error analysis (i.e. classifying failure modes))
+
+actions after testing:
+- look through a list of the top most egregious model errors on the validation dataset and manually categorize these failure modes
+- change model parameters
+
+PRE-TRAINED TESTS:
+- check the shape of your model output and ensure it aligns with the labels in your dataset
+- check the output ranges and ensure it aligns with our expectations (eg. the output of a classification model should be a distribution with class probabilities that sum to 1)
+- make sure a single gradient step on a batch of data yields a decrease in your loss
+- make assertions about your datasets
+- check for label leakage between your training and validation datasets
+
+POST-TRAINED TESTS:
