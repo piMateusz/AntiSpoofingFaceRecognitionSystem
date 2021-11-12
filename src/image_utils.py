@@ -158,20 +158,3 @@ def get_images_as_np_array(cropped=True) -> Tuple[np.ndarray, np.ndarray]:
         all_images = all_cropped_images if cropped is True else all_default_images
 
     return all_images, labels
-
-
-def plot_img_and_cropped(img, cropped):
-    fig = plt.figure(figsize=(50, 50))
-
-    fig.add_subplot(1, 2, 1)
-    plt.imshow(img)
-    plt.axis('off')
-    plt.title("Full image", fontsize=20)
-
-    fig.add_subplot(1, 2, 2)
-    plt.imshow(cropped)
-    plt.axis('off')
-    plt.title("Cropped image", fontsize=20)
-
-    plt.show()
-
