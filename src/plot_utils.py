@@ -22,5 +22,7 @@ def plot_model_evaluation(history):
     plt.plot(history.history['val_accuracy'], label='val_accuracy')
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy')
-    plt.ylim([0.5, 1])
+    plt.ylim([0, 1])
     plt.legend(loc='lower right')
+
+    plt.show()
