@@ -1,23 +1,27 @@
-Wprowadzenie - opis systemów rozpoznawania twarzy, gdzie sie je wykorzystuje, co to jest face spoofing, metody face spoofingu (zdjecie, film, maska 3d), zapotrzebowanie na systemy anty spoofingowe
+ROZWINĄĆ CEL PRACY
 
-Rozdział 1. Metody face spoofingu
+zakonczenie rozdziału
 
-Podział na 2D oraz 3D
-2D:
-- print attack: photo/poster/A4
-- paper cut: paper mask in different positions
-- replay attack: PC/Pad/Phone
+- PROBLEMY:
+"Large Variability in Facial Appearance - Whereas shape and reflectance are intrinsic properties of a face, the appearance (i.e., the texture) of a face is also influenced by several other factors, including the facial pose (or, equivalently, camera
+viewpoint), illumination, and facial expression"
 
-3D:
-- mask 3d
+"aging"
 
-Rozdział 2. Techniki anti spoofingu:
-- sensor based (hardware based) - eg. infrared sensors (iphone FaceID)
-- features based (texture analysis - analyze color-texture information from the luminance and the chrominance channels)
-- score based (machine learning)
-- faze liveness detection (motion analysis)
+"data format, but also additional requirements, namely: scene constraints (lighting, pose, expression, etc.); photographic properties (positioning, camera focus etc.); and digital image attributes (image resolution, image size, etc.)."
+
+"Wielkie kompanie wycofują się z rozpoznawania twarzy ze względu na niepokóje społeczeństwa spowodowane naruszaniem prywatności oraz brak jasnych zasad co do systemów rozpoznawanie twarzy"
 
 
+"High Dimensionality and Small Sample Size - The number of example face images per person (typically fewer than 10,
+and sometimes just one) available for learning the manifold is usually much smaller
+than the dimensionality of the image space; a system trained on a small number of
+examples may not generalize well to unseen instances of the face"
+
+
+- POTRZEBA ULEPSZENIA.
+
+ROZDZIAŁ 3
 Rozdział 3. Bazy danych anty spoofingu
 CelabAspoof:
 CelebA-Spoof is a large-scale face anti-spoofing dataset that has 625,537 images from 10,177 subjects, which includes 43 rich attributes on face, illumination, environment and spoof types.
