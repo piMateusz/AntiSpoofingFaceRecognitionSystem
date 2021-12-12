@@ -23,26 +23,26 @@ if __name__ == '__main__':
     # plot_img_and_cropped(all_cropped_images[0], all_default_images[0])
 
     start = time.time()
-    # model = make_model_cnn()
-    #
-    # es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=10, min_delta=0.0001)
-    # mc = ModelCheckpoint(filepath=CHECKPOINT_FILE_PATH,
-    #                      monitor='val_accuracy',
-    #                      verbose=1,
-    #                      save_weights_only=False,
-    #                      save_best_only=True,
-    #                      mode='max')
+    cnn_model = make_model_cnn()
+
+    es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=10, min_delta=0.0001)
+    mc = ModelCheckpoint(filepath=CHECKPOINT_FILE_PATH,
+                         monitor='val_accuracy',
+                         verbose=1,
+                         save_weights_only=False,
+                         save_best_only=True,
+                         mode='max')
 
     # history = model.fit(train_dataset, epochs=10, callbacks=[es, mc], validation_data=test_dataset)
-    # history = model.fit(train_dataset, epochs=10, callbacks=[mc], validation_data=test_dataset)
+    history = cnn_model.fit(train_dataset, epochs=10, callbacks=[mc], validation_data=test_dataset)
 
     # Recreate the exact same model, including its weights and the optimizer
-    cnn_model = tf.keras.models.load_model(CHECKPOINT_FILE_PATH)
+    # cnn_model = tf.keras.models.load_model(CHECKPOINT_FILE_PATH)
 
     # Show the model architecture
-    cnn_model.summary()
+    # cnn_model.summary()
 
-    # plot_model_evaluation(history)
+    plot_model_evaluation(history)
 
     # test_loss, test_acc = model.evaluate(test_dataset)
     test_loss, test_acc = cnn_model.evaluate(test_dataset)
