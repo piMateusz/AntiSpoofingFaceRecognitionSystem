@@ -1,12 +1,13 @@
 import os
 import dlib
 import cv2
-import subprocess
-import logging
+import face_recognition
+
+import matplotlib.pyplot as plt
+import numpy as np
 
 from skimage.feature import hog
 from skimage import exposure, io
-import matplotlib.pyplot as plt
 
 from constants import UNKNOWN_LIVE_TRUE_IMAGE_FOLDER_PATH, IMAGES_FOLDER_PATH, DATABASE_IMAGE_FOLDER_PATH
 
@@ -28,6 +29,13 @@ out_face_before_and_after_normalization_file_path = os.path.join(IMAGES_FOLDER_P
                                                                  out_face_before_and_after_normalization_file_name)
 out_face_landmarks_normalized_file_name = "face_landmarks_normalized.jpg"
 out_face_landmarks_normalized_file_path = os.path.join(IMAGES_FOLDER_PATH, out_face_landmarks_normalized_file_name)
+
+out_encodings_file_name = "encodings.jpg"
+out_encodings_file_path = os.path.join(IMAGES_FOLDER_PATH, out_encodings_file_name)
+
+out_face_normalized_and_encodings_file_name = "face_normalized_and_encodings.jpg"
+out_face_normalized_and_encodings_file_path = os.path.join(IMAGES_FOLDER_PATH,
+                                                           out_face_normalized_and_encodings_file_name)
 
 
 def plot_face_bbox(input_image_path, output_image_path):
@@ -149,11 +157,41 @@ def plot_face_before_and_after_normalization(input_image_path, output_image_path
     plt.savefig(output_image_path)
 
 
+def create_encodings_image(input_image_path):
+    face = face_recognition.load_image_file(input_image_path)
+    encodings = face_recognition.face_encodings(face)[0]
+    np.set_printoptions(linewidth=60, precision=3)
+    print(f"encodings: \n{encodings}")
+
+
+def plot_face_normalized_and_encodings(normalized_img_path, output_encodings_path, output_image_path):
+    normalized_img = cv2.imread(normalized_img_path)
+    normalized_img = cv2.cvtColor(normalized_img, cv2.COLOR_BGR2RGB)
+
+    encodings_img = cv2.imread(output_encodings_path)
+    encodings_img = cv2.cvtColor(encodings_img, cv2.COLOR_BGR2RGB)
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(8, 4))
+
+    ax1.axis('off')
+    ax1.imshow(normalized_img, cmap=plt.cm.gray)
+    ax1.set_title('Znormalizowana twarz')
+
+    ax2.axis('off')
+    ax2.imshow(encodings_img, cmap=plt.cm.gray)
+    ax2.set_title('Cechy twarzy')
+    # plt.show()
+    plt.savefig(output_image_path)
+
+
 if __name__ == "__main__":
     # uncomment wanted functions
 
     # plot_face_bbox(image_path, out_face_localization_file_path)
     # plot_img_and_hog(image_path, out_hog_file_path)
     # plot_face_landmarks(image_path)
-    plot_face_before_and_after_normalization(database_image_path, out_face_before_and_after_normalization_file_path,
-                                             out_face_landmarks_normalized_file_path)
+    # plot_face_before_and_after_normalization(database_image_path, out_face_before_and_after_normalization_file_path,
+    #                                          out_face_landmarks_normalized_file_path)
+    # create_encodings_image(database_image_path)
+    plot_face_normalized_and_encodings(out_face_landmarks_normalized_file_path, out_encodings_file_path,
+                                       out_face_normalized_and_encodings_file_path)

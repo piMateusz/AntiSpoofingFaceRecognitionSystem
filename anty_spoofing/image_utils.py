@@ -164,6 +164,7 @@ def get_all_images(data_path: str, json_path: str, tf_record_directory_path: str
                 logging.info(f" Saving {counter} images to: {tf_record_file_name}")
                 save_data_to_tf_records(all_cropped_images, labels, tf_record_file_path)
                 all_cropped_images = []
+                labels = []
 
     tfr_file_pattern = os.path.join(tf_record_directory_path, "*.tfrecords")
     tfr_filenames = tf.io.gfile.glob(tfr_file_pattern)

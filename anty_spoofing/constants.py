@@ -16,7 +16,7 @@ TEST_IMAGE_JSON_PATH = os.path.join(DATASET_PATH, LOCAL_TEST_IMAGE_JSON_PATH)
 CHECKPOINT_DIR_PATH = os.path.join("..", "checkpoints")
 CHECKPOINT_FILE_PATH = os.path.join(CHECKPOINT_DIR_PATH, "best_model_cnn.hdf5")
 # tf record file paths
-TF_RECORD_TRAIN_DIR_PATH = os.path.join(DATASET_PATH, "Data", TESTING_CASE, "train_1")
+TF_RECORD_TRAIN_DIR_PATH = os.path.join(DATASET_PATH, "Data", TESTING_CASE, "train")
 TF_RECORD_TEST_DIR_PATH = os.path.join(DATASET_PATH, "Data", TESTING_CASE, "test")
 
 # image constants

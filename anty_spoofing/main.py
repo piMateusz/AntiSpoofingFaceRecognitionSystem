@@ -23,6 +23,7 @@ if __name__ == '__main__':
     # plot_img_and_cropped(all_cropped_images[0], all_default_images[0])
 
     start = time.time()
+
     cnn_model = make_model_cnn()
 
     es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=10, min_delta=0.0001)
@@ -40,7 +41,7 @@ if __name__ == '__main__':
     # cnn_model = tf.keras.models.load_model(CHECKPOINT_FILE_PATH)
 
     # Show the model architecture
-    # cnn_model.summary()
+    cnn_model.summary()
 
     plot_model_evaluation(history)
 
@@ -48,8 +49,30 @@ if __name__ == '__main__':
     test_loss, test_acc = cnn_model.evaluate(test_dataset)
 
     print(f"accuracy: {test_acc}")
-    predictions = cnn_model.predict(test_dataset, verbose=1)
-    print(f"predictions: {predictions > 0.5}")
+    # predictions = cnn_model.predict(test_dataset, verbose=1)
+    # print(f"predictions: {predictions > 0.5}")
 
     end = time.time()
     logging.info(f" Total training time: {end - start}")
+
+    """ ResNet50"""
+
+    # # Create a model and train it on the augmented image data
+    # from tensorflow import keras
+    # input_shape = (224, 224, 3)
+    # inputs = keras.Input(shape=input_shape)
+    # outputs = keras.applications.ResNet50(  # Add the rest of the model
+    #     weights=None, input_shape=input_shape, classes=1)(inputs)
+    # model = keras.Model(inputs, outputs)
+    # model.compile(optimizer='adam',
+    #               loss='binary_crossentropy',
+    #               metrics=['accuracy'])
+    # model.summary()
+    # es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=10, min_delta=0.0001)
+    # mc = ModelCheckpoint(filepath=CHECKPOINT_FILE_PATH,
+    #                      monitor='val_accuracy',
+    #                      verbose=1,
+    #                      save_weights_only=False,
+    #                      save_best_only=True,
+    #                      mode='max')
+    # history = model.fit(train_dataset, epochs=10, callbacks=[mc], validation_data=test_dataset)
