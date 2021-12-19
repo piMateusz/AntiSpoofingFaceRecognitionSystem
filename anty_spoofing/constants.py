@@ -2,8 +2,8 @@ import os
 import tensorflow as tf
 
 # choose testing case
-TESTING_CASE = "intra_test"
-# TESTING_CASE = "protocol1"
+# TESTING_CASE = "intra_test"
+TESTING_CASE = "protocol1"
 # TESTING_CASE = "protocol2
 
 # files paths
