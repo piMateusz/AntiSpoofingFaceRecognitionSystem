@@ -5,7 +5,7 @@ import tensorflow as tf
 
 from retinaface import RetinaFace
 
-from anty_spoofing.constants import CHECKPOINT_FILE_PATH, COMMON_IMAGE_SIZE, BATCH_SIZE
+from anty_spoofing.constants import CHECKPOINT_CNN_FILE_PATH, COMMON_IMAGE_SIZE, BATCH_SIZE
 from anty_spoofing.data_preprocessing import preprocess_data
 from face_recognition_system.src.face_recognition_system import classify_one_image, get_encoded_faces
 from constants import ANTI_SPOOFING_ACCESS_DENIED_MSG, ANTI_SPOOFING_ACCESS_GRANTED_MSG, \
@@ -16,10 +16,21 @@ def main():
     # TODO parametrize checkpoint file and common image size
     # TODO consider splitting this method to 2 - 3 functions (eg. face_recognition, anti_spoofing, drawing)
     # define a video capture object
-    vid = cv2.VideoCapture(0)
+    # vid = cv2.VideoCapture(0)
+
+
+    vid = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+    # set camera resolution
+    vid.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+    vid.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+    # print camera resolution
+    w = vid.get(cv2.CAP_PROP_FRAME_WIDTH)
+    h = vid.get(cv2.CAP_PROP_FRAME_HEIGHT)
+    print(f"resolution: {w}x{h}")
+
 
     # load anti spoofing model
-    cnn_model = tf.keras.models.load_model(CHECKPOINT_FILE_PATH)
+    cnn_model = tf.keras.models.load_model(CHECKPOINT_CNN_FILE_PATH)
 
     # get encoded faces from database (image folder)
     database_faces_encoded = get_encoded_faces(DATABASE_IMAGE_FOLDER_PATH)
@@ -27,6 +38,12 @@ def main():
     while True:
         # Capture the video frame
         ret, image = vid.read()
+        # import os
+        # import time
+        # image = cv2.imread(os.path.join("..", "face_recognition_system", "data", "unknown_spoof_images", "spoof.jpg"))
+        # image = cv2.imread(os.path.join("..", "face_recognition_system", "data", "unknown_live_true_images", "live.jpg"))
+
+        # cv2.imwrite("Mateusz_Pilecki.png", image)
         user_msg = ""
         # crop image
         # using face_recognition
@@ -51,7 +68,8 @@ def main():
             dataset = dataset.batch(BATCH_SIZE)
             # make prediction
             prediction = cnn_model.predict(dataset)
-            anti_spoofing_result = prediction < 0.5
+            print(f"prediction: {prediction}")
+            anti_spoofing_result = prediction < 0.9
             user_msg = ANTI_SPOOFING_ACCESS_DENIED_MSG if anti_spoofing_result == 1 else ANTI_SPOOFING_ACCESS_GRANTED_MSG
 
             """ Face recognition system """

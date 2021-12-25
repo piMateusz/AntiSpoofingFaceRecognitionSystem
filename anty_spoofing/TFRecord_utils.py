@@ -86,7 +86,7 @@ def read_tfrecord(example, labeled):
     example = tf.io.parse_single_example(example, image_feature_description)
     image = tf.io.parse_tensor(example['raw_image'], out_type=tf.float32)
     if labeled:
-        label = tf.cast(example["label"], tf.int32)
+        label = tf.cast(example["label"], tf.int64)
         return image, label
     return image
 

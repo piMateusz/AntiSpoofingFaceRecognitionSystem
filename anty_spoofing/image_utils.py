@@ -67,7 +67,7 @@ def preprocess_all_images(data_path: str, common_image_size: int, all_image_dict
     """
     logging.info(" Getting all images started")
     images_number = len(all_image_dict)
-
+    spoof_counter = 0
     for counter, image_local_path in enumerate(all_image_dict):
         try:
             img, img_bbox_path = read_image(data_path, image_local_path)
@@ -78,6 +78,14 @@ def preprocess_all_images(data_path: str, common_image_size: int, all_image_dict
             cropped_img = preprocess_data(cropped_img, common_image_size)
             # get live/spoof attribute label
             live_spoof_label = all_image_dict[image_local_path][-1]
+
+            # code that omits every second spoof image to make classes distribution close to 50/50
+            # if image is spoof increase spoof counter
+            # if live_spoof_label == 1:
+            #     spoof_counter += 1
+            # if spoof_counter == 2:
+            #     spoof_counter = 0
+            #     continue
             yield cropped_img, live_spoof_label
 
         except Exception as e:
@@ -158,7 +166,6 @@ def get_all_images(data_path: str, json_path: str, tf_record_directory_path: str
             all_cropped_images.append(cropped_img)
             labels.append(label)
             if counter % tf_record_size == 0 and counter:
-                all_cropped_images = tf.stack(all_cropped_images, axis=0, name='stack cropped images')
                 tf_record_file_name = 'tfr_' + str(counter//tf_record_size) + '.tfrecords'
                 tf_record_file_path = os.path.join(tf_record_directory_path, tf_record_file_name)
                 logging.info(f" Saving {counter} images to: {tf_record_file_name}")
