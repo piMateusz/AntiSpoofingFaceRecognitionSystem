@@ -1,8 +1,9 @@
 import tensorflow as tf
 import logging
 from functools import partial
-from constants import BATCH_SIZE, AUTOTUNE
-
+# from constants import BATCH_SIZE, AUTOTUNE
+BATCH_SIZE = 2
+AUTOTUNE = tf.data.experimental.AUTOTUNE
 # The following functions can be used to convert a value to a type compatible
 # with tf.train.Example.
 
@@ -92,14 +93,14 @@ def read_tfrecord(example, labeled):
 
 
 def load_dataset(filenames, labeled=True):
-    ignore_order = tf.data.Options()
-    ignore_order.experimental_deterministic = False  # disable order, increase speed
+    # ignore_order = tf.data.Options()
+    # ignore_order.experimental_deterministic = False  # disable order, increase speed
     dataset = tf.data.TFRecordDataset(
         filenames
     )  # automatically interleaves reads from multiple files
-    dataset = dataset.with_options(
-        ignore_order
-    )  # uses data as soon as it streams in, rather than in its original order
+    # dataset = dataset.with_options(
+    #     ignore_order
+    # )  # uses data as soon as it streams in, rather than in its original order
     dataset = dataset.map(
         partial(read_tfrecord, labeled=labeled))
     # returns a dataset of (image, label) pairs if labeled=True or just images if labeled=False

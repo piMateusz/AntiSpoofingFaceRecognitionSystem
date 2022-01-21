@@ -8,6 +8,7 @@ import numpy as np
 
 from skimage.feature import hog
 from skimage import exposure, io
+from typing import List
 
 from constants import UNKNOWN_LIVE_TRUE_IMAGE_FOLDER_PATH, IMAGES_FOLDER_PATH, DATABASE_IMAGE_FOLDER_PATH
 
@@ -37,6 +38,12 @@ out_face_normalized_and_encodings_file_name = "face_normalized_and_encodings.jpg
 out_face_normalized_and_encodings_file_path = os.path.join(IMAGES_FOLDER_PATH,
                                                            out_face_normalized_and_encodings_file_name)
 
+out_pie_chart_live_faces_file_name = "pie_chart_live.png"
+out_pie_chart_live_faces_file_path = os.path.join(IMAGES_FOLDER_PATH, out_pie_chart_live_faces_file_name)
+
+out_pie_chart_spoof_faces_file_name = "pie_chart_spoof.png"
+out_pie_chart_spoof_faces_file_path = os.path.join(IMAGES_FOLDER_PATH, out_pie_chart_spoof_faces_file_name)
+
 
 def plot_face_bbox(input_image_path, output_image_path):
     # Create a HOG face detector using the built-in dlib class
@@ -51,8 +58,6 @@ def plot_face_bbox(input_image_path, output_image_path):
     print("I found {} faces in the file {}".format(len(detected_faces), input_image_path))
     # Loop through each face we found in the image
     for i, face_rect in enumerate(detected_faces):
-        # Detected faces are returned as an object with the coordinates
-        # of the top, left, right and bottom edges
         print("- Face #{} found at Left: {} Top: {} Right: {} Bottom: {}".format(i + 1, face_rect.left(), face_rect.top(),
                                                                                  face_rect.right(), face_rect.bottom()))
         # Draw a box around each face we found
@@ -68,7 +73,7 @@ def plot_img_and_hog(input_image_path, output_image_path):
     fd, hog_image = hog(image, orientations=8, pixels_per_cell=(16, 16),
                         cells_per_block=(1, 1), visualize=True, multichannel=True)
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(8, 4), sharex=True, sharey=True)
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(8, 4), sharex="all", sharey="all")
 
     ax1.axis('off')
     ax1.imshow(image, cmap=plt.cm.gray)
@@ -108,8 +113,6 @@ def plot_face_landmarks(input_image_path):
 
     # Loop through each face we found in the image
     for i, face_rect in enumerate(detected_faces):
-        # Detected faces are returned as an object with the coordinates
-        # of the top, left, right and bottom edges
         print("- Face #{} found at Left: {} Top: {} Right: {} Bottom: {}".format(i, face_rect.left(), face_rect.top(),
                                                                                  face_rect.right(), face_rect.bottom()))
         # Get the the face's pose
@@ -136,15 +139,13 @@ def plot_face_before_and_after_normalization(input_image_path, output_image_path
     print("I found {} faces in the file {}".format(len(detected_faces), input_image_path))
     # Loop through each face we found in the image
     for i, face_rect in enumerate(detected_faces):
-        # Detected faces are returned as an object with the coordinates
-        # of the top, left, right and bottom edges
         print("- Face #{} found at Left: {} Top: {} Right: {} Bottom: {}".format(i + 1, face_rect.left(), face_rect.top(),
                                                                                  face_rect.right(), face_rect.bottom()))
         cropped_image = img[face_rect.top(): face_rect.bottom(), face_rect.left(): face_rect.right()]
         # resize image
         cropped_image = cv2.resize(cropped_image, (image_normalized.shape[1], image_normalized.shape[0]))
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(8, 4), sharex=True, sharey=True)
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(8, 4), sharex="all", sharey="all")
 
     ax1.axis('off')
     ax1.imshow(cropped_image, cmap=plt.cm.gray)
@@ -184,6 +185,14 @@ def plot_face_normalized_and_encodings(normalized_img_path, output_encodings_pat
     plt.savefig(output_image_path)
 
 
+def plot_pie_chart(values: List[int], labels: List[str], output_image_path):
+    fig1, ax1 = plt.subplots()
+    ax1.pie(values, labels=labels, shadow=True, startangle=90, autopct='%1.1f%%')
+    ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    plt.savefig(output_image_path)
+    # plt.show()
+
+
 if __name__ == "__main__":
     # uncomment wanted functions
 
@@ -193,5 +202,7 @@ if __name__ == "__main__":
     # plot_face_before_and_after_normalization(database_image_path, out_face_before_and_after_normalization_file_path,
     #                                          out_face_landmarks_normalized_file_path)
     # create_encodings_image(database_image_path)
-    plot_face_normalized_and_encodings(out_face_landmarks_normalized_file_path, out_encodings_file_path,
-                                       out_face_normalized_and_encodings_file_path)
+    # plot_face_normalized_and_encodings(out_face_landmarks_normalized_file_path, out_encodings_file_path,
+    #                                    out_face_normalized_and_encodings_file_path)
+    plot_pie_chart([116, 2], ["Rozpoznane twarze", "Nierozpoznane twarze"], out_pie_chart_live_faces_file_path)
+    plot_pie_chart([528, 24], ["Rozpoznane twarze", "Nierozpoznane twarze"], out_pie_chart_spoof_faces_file_path)

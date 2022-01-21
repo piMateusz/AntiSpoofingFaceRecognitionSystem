@@ -14,18 +14,24 @@ TRAIN_IMAGE_JSON_PATH = os.path.join(DATASET_PATH, LOCAL_TRAIN_IMAGE_JSON_PATH)
 TEST_IMAGE_JSON_PATH = os.path.join(DATASET_PATH, LOCAL_TEST_IMAGE_JSON_PATH)
 
 CHECKPOINT_DIR_PATH = os.path.join("..", "checkpoints")
-CHECKPOINT_FILE_PATH = os.path.join(CHECKPOINT_DIR_PATH, "best_model_cnn.hdf5")
-CHECKPOINT_CNN_FILE_PATH = os.path.join(CHECKPOINT_DIR_PATH, "best_model_cnn_improved.hdf5")
+CHECKPOINT_CNN_FILE_PATH = os.path.join(CHECKPOINT_DIR_PATH, "best_model_cnn.hdf5")
+# res_net50_best_model
 CHECKPOINT_RESNET_FILE_PATH = os.path.join(CHECKPOINT_DIR_PATH, "best_model_resnet50.hdf5")
+# lastly changed res_net50
+CHECKPOINT_LAST_RESNET_FILE_PATH = os.path.join(CHECKPOINT_DIR_PATH, "last_model_resnet50.hdf5")
 
-# tf record file paths
-TF_RECORD_TRAIN_DIR_PATH = os.path.join(DATASET_PATH, "Data", TESTING_CASE, "train")
-TF_RECORD_TEST_DIR_PATH = os.path.join(DATASET_PATH, "Data", TESTING_CASE, "test")
-# TF_RECORD_VALIDATION_DIR_PATH = os.path.join(DATASET_PATH, "Data", TESTING_CASE, "train")
+# tf record file paths - small dataset for res_net50
+TF_RECORD_TRAIN_DIR_PATH = os.path.join(DATASET_PATH, "Data", TESTING_CASE, "train_maly_zbior")
+TF_RECORD_TEST_DIR_PATH = os.path.join(DATASET_PATH, "Data", TESTING_CASE, "test_maly_zbior")
+
+# tf record file paths - whole dataset
+# TF_RECORD_TRAIN_DIR_PATH = os.path.join(DATASET_PATH, "Data", TESTING_CASE, "train")
+# TF_RECORD_TEST_DIR_PATH = os.path.join(DATASET_PATH, "Data", TESTING_CASE, "test")
 
 # image constants
 COMMON_IMAGE_SIZE = 224
+INPUT_SHAPE = (COMMON_IMAGE_SIZE, COMMON_IMAGE_SIZE, 3)
 
 # learning constants
-BATCH_SIZE = 10
+BATCH_SIZE = 2
 AUTOTUNE = tf.data.experimental.AUTOTUNE

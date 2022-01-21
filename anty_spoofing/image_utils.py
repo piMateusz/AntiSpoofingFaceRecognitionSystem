@@ -79,13 +79,6 @@ def preprocess_all_images(data_path: str, common_image_size: int, all_image_dict
             # get live/spoof attribute label
             live_spoof_label = all_image_dict[image_local_path][-1]
 
-            # code that omits every second spoof image to make classes distribution close to 50/50
-            # if image is spoof increase spoof counter
-            # if live_spoof_label == 1:
-            #     spoof_counter += 1
-            # if spoof_counter == 2:
-            #     spoof_counter = 0
-            #     continue
             yield cropped_img, live_spoof_label
 
         except Exception as e:
